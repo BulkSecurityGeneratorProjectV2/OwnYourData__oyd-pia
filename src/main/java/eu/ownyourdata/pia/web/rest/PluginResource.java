@@ -52,6 +52,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.HashSet;
@@ -302,7 +303,7 @@ public class PluginResource {
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.POST, value = "/plugins/install")
     public ResponseEntity<Void> install(@RequestBody JSONObject object) throws IOException, JSONException {
-        File zip = File.createTempFile("pia-plugin", "zip");
+        File zip = Files.createTempFile("pia-plugin", "zip").toFile();
         Store store = storeRepository.findOne(object.getLong("id"));
         FileUtils.copyURLToFile(new URL(store.getUrl()+"/api/plugins/"+object.getLong("plugin")+"/download"),zip);
 
